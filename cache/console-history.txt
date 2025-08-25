@@ -1,0 +1,9 @@
+cd .. && npx hardhat run check-contract-profile.js --network sepolia
+cd .. && npx hardhat run --network sepolia -e "const { ethers } = require('hardhat'); const TalentProfile = await ethers.getContractFactory('TalentProfile'); const talentProfile = TalentProfile.attach('0x6f1e23dcda6e8697A825CAF957bBaa273AE9fcbF'); const address = '0x7e72ac838d13013a14693ca4e34b60c8b3670278'; console.log('Checking profile for address:', address); const exists = await talentProfile.profileExists(address); console.log('Profile exists:', exists); if (exists) { const profile = await talentProfile.getProfile(address); console.log('Profile data from contract:'); console.log('Name:', profile.name); console.log('Email:', profile.email); console.log('Telegram:', profile.telegram); console.log('Bio:', profile.bio); console.log('Resume Hash:', profile.resumeHash); console.log('Skills:', profile.skills); console.log('Created At:', new Date(Number(profile.createdAt) * 1000)); console.log('Updated At:', new Date(Number(profile.updatedAt) * 1000)); }"
+curl -X POST -H "Content-Type: application/json" --data '{"query":"{ talentProfile(id: \"0x6f1e23dcda6e8697A825CAF957bBaa273AE9fcbF\") { id name email telegram bio resumeHash skills createdAt updatedAt } }"}' https://api.studio.thegraph.com/query/0/chain-talent-sepolia/v0.0.1
+cd CryptoCareers-dApp && npx hardhat run -e "console.log('Function signatures:'); const TalentProfile = await ethers.getContractFactory('TalentProfile'); const abi = TalentProfile.interface.fragments.map(f => f.format()); console.log(abi);" --network sepolia
+echo "Checking if .env file has required variables..." && if [ -f .env ]; then echo "✅ .env file exists"; else echo "❌ .env file not found"; fi
+.help
+exit
+ls -la | grep "\.env"
+pkill -f "hardhat\|node" || true
